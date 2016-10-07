@@ -10,20 +10,28 @@ class Injector {
     {
         $instanced = array();
 
-        foreach ($arrayDependencies as $index => $object)
+        foreach ($arrayDependencies as $index => $required)
         {
-            if (!class_exists($object) && $this->memory($object))
+            $id = $index;
+            $object = $required;
+
+            if (is_string($required) && $this->memory($required))
             {
-                $instanced[$object] = $this->memory($object);
-            } else {
-                $instanced[$index] = new $object;
+                $id = $required;
+                $object = $this->memory($required);
             }
+
+            if (!is_object($object) && class_exists($object))
+                $object = new $object;
+
+            $instanced[$id] = $object;
         }
         return $instanced;
     }
 
     public function memory ($index, $object = null)
     {
+        // Todo: error
         if ($object)
         {
             $this->memory[$index] = $object;

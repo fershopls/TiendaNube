@@ -16,6 +16,7 @@ class Product extends Module {
     {
         return array(
             'app',
+            'api',
         );
     }
 
