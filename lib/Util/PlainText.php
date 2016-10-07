@@ -64,7 +64,7 @@ class PlainText {
         for ($i = 0; $i < count($this->line_stack); $i++)
         {
             if ($i < $headers)
-            continue;
+                continue;
 
             $line = $this->nextLine();
             $line_row = [];
@@ -72,9 +72,9 @@ class PlainText {
             if ($is_multiline) {
                 $lines_per_row = count($rules);
 
-                for ($i = 0; $i < $lines_per_row; $i++)
+                for ($k = 0; $k < $lines_per_row; $k++)
                 {
-                    $row_applied = $this->applyRulesArray($rules[$i], $line, $trim);
+                    $row_applied = $this->applyRulesArray($rules[$k], $line, $trim);
                     $line_row = array_merge($line_row, $row_applied);
                     $line = $this->nextLine();
                 }
