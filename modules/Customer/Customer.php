@@ -23,7 +23,7 @@ class Customer extends Module {
     public function getModuleRoutes ()
     {
         return array(
-            "upload_customer" => "@",
+            "upload_customer" => "$",
             "remove_customer" => "-",
         );
     }
@@ -31,19 +31,26 @@ class Customer extends Module {
     public function getModuleAttributes ()
     {
         return array(
-            [ // Line 1
+            'line1' => [ // Line 1
                 "controller" => "1|1",
-                "id" => "2|8",
-                "name" => "12|79",
-                "address" => "92|49",
-                "province" => "142|39",
-                "region" => "182|14",
-                "city" => "197|4",
+                "id" => "2|10",
+                "type" => "13|20",
+                "name" => "34|80",
+                "nick" => "115|10",
+                "email" => "126|40",
+                "RFC" => "167|15",
             ],
-            [ // Line 2
-                "telephone" => "2|52",
-                "email" => "62|39",
-                "postcode" => "55|6"
+            'line2' => [ // Line 2
+                "controller" => "1|1",
+                "id" => "2|10",
+                "address" => "13|30",
+                "next" => "44|10",
+                "nint" => "55|10",
+                "colonia" => "66|40",
+                "city" => "107|40",
+                "state" => "148|15",
+                "postal" => "164|7",
+                "country" => "172|10",
             ]
         );
     }

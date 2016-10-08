@@ -57,6 +57,7 @@ class ModuleHandler {
 
             foreach ($rows as $row) {
                 // TODO: Verify when `getModuleControllerAction` is called if method(action) actually exists.
+
                 $action = $this->getModuleControllerAction($row['controller'], $entity);
 
                 $_name = get_class($entity);

@@ -49,43 +49,34 @@ class PlainText {
         return $this->getLine($this->line_index);
     }
 
-    /**
-     * Return array of data processed by rules
-     * @param  array  $rules Array of Rules
-     * @param  bool $multiline Indicates if rules are multiline or not
-     * @param  int    $headers Lines in number of header occupancy
-     * @param  bool   $trim  Clean the String
-     * @return array         Variable to array
-     */
-    public function toArray($rules, $headers=0, $trim = True) {
-        $rows = [];
-        $is_multiline = is_array(current($rules))?True:False;
+    public function toArray($rules, $trim = True)
+    {
+        $rows = array();
+        $is_multiline = is_array($rules[array_keys($rules)[0]])?True:False;
+        $lines_per_row = count($rules);
 
         for ($i = 0; $i < count($this->line_stack); $i++)
         {
-            if ($i < $headers)
-                continue;
-
-            $line = $this->nextLine();
-            $line_row = [];
+            $line  = $this->nextLine();
+            $line_row = array();
 
             if ($is_multiline) {
-                $lines_per_row = count($rules);
-
                 for ($k = 0; $k < $lines_per_row; $k++)
                 {
-                    $row_applied = $this->applyRulesArray($rules[$k], $line, $trim);
+                    $row_applied = $this->applyRulesArray($rules[array_keys($rules)[$k]], $line, $trim);
                     $line_row = array_merge($line_row, $row_applied);
-                    $line = $this->nextLine();
+
+                    if ($k != $lines_per_row -1)
+                        $line = $this->nextLine();
                 }
             } else {
                 $line_row = $this->applyRulesArray($rules, $line, $trim);
             }
 
-            array_push($rows, $line_row);
+            $rows[] = $line_row;
         }
 
-        return array_values($rows);
+        return $rows;
     }
 
     /**
