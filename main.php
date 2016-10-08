@@ -8,12 +8,14 @@ use Phine\Path\Path;
 // Modules
 use Modules\Product\Product;
 use Modules\Customer\Customer;
+use Modules\Category\Category;
 
 $settings = include(Path::join([APP_PATH, 'support/config.php']));
 $app = new App($settings);
 // Register Modules
-# $app->register(Product::class);
-$app->register(Customer::class);
+$app->register(Product::class);
+# $app->register(Customer::class);
+# $app->register(Category::class);
 
 $app->run();
 
