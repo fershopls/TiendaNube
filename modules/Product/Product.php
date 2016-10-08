@@ -31,13 +31,18 @@ class Product extends Module {
     public function getModuleAttributes ()
     {
         return array(
-            "controller" => "1|1",
-            "sku"   => "2|16",
-            "name"  => "36|40",
-            "about" => "77|40",
-            "category"  => "118|11",
+            "controller"=> "1|1",
+            "sku"       => "2|16",
+            "sku2"      => "19|16",
+            "name"      => "36|40",
+            "name2"     => "77|40",
+            "category"  => "118|10",
+            "unity_v"   => "129|3",
             "price"     => "133|12",
-            "stock"     => "189|12"
+            "tax"       => "146|6",
+            "create_on" => "153|11",
+            "update_on" => "165|11",
+            "stock"     => "177|12",
         );
     }
 
