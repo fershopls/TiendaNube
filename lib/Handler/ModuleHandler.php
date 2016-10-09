@@ -2,10 +2,6 @@
 
 namespace lib\Handler;
 
-use lib\Module\Module;
-use lib\Module\Controller;
-use lib\App\Injector;
-
 use Phine\Path\Path;
 use lib\Util\PlainText;
 
@@ -21,13 +17,13 @@ class ModuleHandler extends Handler {
         );
     }
 
-    public function handle (Module $entity, Controller $controller) {
+    public function handle (\lib\Module\Module $module, \lib\Module\Controller $controller) {
         /** @var \lib\Util\PlainText $database */
         $database = $this->dependency('plain_text');
 
-        $_path = $this->getPath($entity);
+        $_path = $this->getPath($module);
         $_files = $this->availableFiles($_path);
-        $_attributes = $this->getAttributesByPriority($entity);
+        $_attributes = $this->getAttributesByPriority($module);
 
         foreach ($_files as $filename) {
 
@@ -42,13 +38,13 @@ class ModuleHandler extends Handler {
             foreach ($rows as $row) {
                 // TODO: Verify when `getModuleControllerAction` is called if method(action) actually exists.
 
-                $action = $this->getModuleControllerAction($row['controller'], $entity);
+                $action = $this->getModuleControllerAction($row['controller'], $module);
 
-                $_name = get_class($entity);
+                $_name = get_class($module);
 
 //                $logger->pushProcessor(function($record) use ($action, $_name, $filename){
 //                    $record['extra']['method'] = $action;
-//                    $record['extra']['module'] = $entity_name;
+//                    $record['extra']['module'] = $module_name;
 //                    $record['extra']['file_path'] = $filename;
 //                    return $record;
 //                });
@@ -67,11 +63,11 @@ class ModuleHandler extends Handler {
 //                $logger->popProcessor();
             }
 
-            # $this->migrateModuleFile($entity_path, $filename);
+            # $this->migrateModuleFile($module_path, $filename);
         }
     }
 
-    public function getPath (Module $module)
+    public function getPath (\lib\Module\Module $module)
     {
         // Todo: error
         $_name = explode("\\", get_class($module));
@@ -80,10 +76,10 @@ class ModuleHandler extends Handler {
         return $this->dependency('app')->getPath($_path);
     }
 
-    public function getAttributesByPriority (Module $entity) {
-        $_path = $this->getPath($entity);
+    public function getAttributesByPriority (\lib\Module\Module $module) {
+        $_path = $this->getPath($module);
         $_file_config = Path::join([$_path, self::MODULE_CONFIG_FILENAME]);
-        $_attributes = $entity->getModuleAttributes();
+        $_attributes = $module->getModuleAttributes();
 
         if (file_exists($_file_config))
             $_attributes = array_merge($_attributes, json_decode(file_get_contents($_file_config), True));
@@ -93,9 +89,9 @@ class ModuleHandler extends Handler {
         return $_attributes;
     }
 
-    public function getModuleControllerAction ($stringController, Module $entity) {
+    public function getModuleControllerAction ($stringController, \lib\Module\Module $module) {
         // Todo: error
-        $action = array_search($stringController, $entity->getModuleRoutes());
+        $action = array_search($stringController, $module->getModuleRoutes());
         if (!$action)
             return False;
         return "do" . preg_replace("/\s/", "", ucwords(preg_replace("/[\-\_]/i", " ", $action)));
