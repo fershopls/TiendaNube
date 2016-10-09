@@ -1,6 +1,6 @@
 <?php
 
-namespace lib\Module;
+namespace lib\Handler;
 
 use lib\Module\Module;
 use lib\Module\Controller;
@@ -9,18 +9,9 @@ use lib\App\Injector;
 use Phine\Path\Path;
 use lib\Util\PlainText;
 
-class ModuleHandler {
-
-    protected $injector;
-    protected $dependencies = array();
+class ModuleHandler extends Handler {
 
     const MODULE_CONFIG_FILENAME = 'config.json';
-
-    public function __construct(Injector $injector)
-    {
-        $this->injector = $injector;
-        $this->dependencies = $this->injector->solve($this->getDependencies());
-    }
 
     public function getDependencies ()
     {
@@ -30,19 +21,12 @@ class ModuleHandler {
         );
     }
 
-    public function dependency ($index)
-    {
-        return isset($this->dependencies[$index])?$this->dependencies[$index]:false;
-    }
-
     public function handle (Module $entity, Controller $controller) {
         /** @var \lib\Util\PlainText $database */
-        /** @var \lib\App\Api $api */
         $database = $this->dependency('plain_text');
-        $api = $this->dependency('api');
 
         $_path = $this->getPath($entity);
-        $_files = $this->getAvailableFiles($_path);
+        $_files = $this->availableFiles($_path);
         $_attributes = $this->getAttributesByPriority($entity);
 
         foreach ($_files as $filename) {
@@ -94,13 +78,6 @@ class ModuleHandler {
         $_name = strtolower($_name[count($_name) -1]);
         $_path = $this->dependency('app')->set()->get('sources.'.$_name, false);
         return $this->dependency('app')->getPath($_path);
-    }
-
-    public function getAvailableFiles ($stringPath)
-    {
-        $available_files = scandir($stringPath);
-        array_shift($available_files);array_shift($available_files);
-        return $available_files;
     }
 
     public function getAttributesByPriority (Module $entity) {

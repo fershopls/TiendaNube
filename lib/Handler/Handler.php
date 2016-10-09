@@ -2,33 +2,31 @@
 
 namespace lib\Handler;
 
-class Handler {
+use lib\App\Injector;
 
-    // Properties
-    protected $handlerDependencies = array();
-    // Objects
-    protected $app;
-    protected $controller;
+abstract class Handler {
+
+    protected $injector;
     protected $dependencies = array();
+    
+    abstract public function getDependencies ();
 
-    public function getHandlerDependencies () {
-        return $this->handlerDependencies;
+    public function __construct(Injector $injector)
+    {
+        $this->injector = $injector;
+        $this->dependencies = $this->injector->solve($this->getDependencies());
     }
 
-    public function setDependencies ($dependencies = []) {
-        if (is_array($dependencies))
-            $this->dependencies = array_merge($this->dependencies, $dependencies);
+    public function dependency ($index)
+    {
+        return isset($this->dependencies[$index])?$this->dependencies[$index]:false;
     }
 
-    public function dependency ($index) {
-        return isset($this->dependencies[$index])?$this->dependencies[$index]:$this->dependencies;
-    }
-
-    public function controller ($instance = null) {
-        if ($instance and is_object($instance))
-            $this->controller = $instance;
-        else
-            return $this->controller;
+    public function availableFiles ($stringPath)
+    {
+        $available_files = scandir($stringPath);
+        array_shift($available_files);array_shift($available_files);
+        return $available_files;
     }
 
 }

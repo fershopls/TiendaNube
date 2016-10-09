@@ -2,7 +2,7 @@
 
 namespace lib\Module;
 
-use lib\Module\ModuleHandler;
+use lib\Handler\ModuleHandler;
 
 abstract class Module {
 
