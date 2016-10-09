@@ -4,6 +4,7 @@ namespace Modules\Product;
 
 use lib\Module\Module;
 use Modules\Product\ProductController;
+use Modules\Category\CategoryModel;
 
 class Product extends Module {
 
@@ -17,6 +18,7 @@ class Product extends Module {
         return array(
             'app',
             'api',
+            'model' => CategoryModel::class,
         );
     }
 
@@ -36,13 +38,16 @@ class Product extends Module {
             "sku2"      => "19|16",
             "name"      => "36|40",
             "name2"     => "77|40",
-            "category"  => "118|10",
             "unity_v"   => "129|3",
             "price"     => "133|12",
             "tax"       => "146|6",
             "create_on" => "153|11",
             "update_on" => "165|11",
             "stock"     => "177|12",
+            // Category
+            "id_x"  => "118|2",
+            "id_y"  => "121|3",
+            "id_z"  => "125|3",
         );
     }
 

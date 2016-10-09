@@ -31,7 +31,8 @@ class CategoryModel {
     }
 
     public function getSQLite3CategoryIdByRoute ($category_route = "", $fallback = null) {
-        $sqlite_result = $this->getSQLite3Connection()->query('SELECT * FROM magento_macropro WHERE `route_string` = "'.$category_route.'"');
+        $sqlite_result = $this->getSQLite3Connection()->query('SELECT * FROM magento_macropro WHERE route_string = "'.$category_route.'"');
+        $sqlite_result->execute();
         $sqlite_result = $sqlite_result->fetch();
         return $sqlite_result?$sqlite_result['magento_id']:$fallback;
     }

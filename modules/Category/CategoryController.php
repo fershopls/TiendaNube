@@ -6,7 +6,7 @@ use lib\Module\Controller;
 
 class CategoryController extends Controller {
 
-    const DEFAULT_PARENT_ID = 87;
+    const DEFAULT_PARENT_ID = 94;
     protected $classModel;
 
 
@@ -37,7 +37,7 @@ class CategoryController extends Controller {
     protected function category ($row = array()) {
         return [
             'category' => [
-                'name' => ucwords(strtolower($row['name'])),
+                'name' => ucwords(strtolower(utf8_encode($row['name']))),
                 'parentId' => $this->getParentIdFrom($row),
                 'isActive' => true,
                 'includeInMenu' => true,
