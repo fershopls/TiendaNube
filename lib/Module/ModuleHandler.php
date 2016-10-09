@@ -87,19 +87,13 @@ class ModuleHandler {
         }
     }
 
-
-    public function getPrefixPath ()
-    {
-        return Path::join([APP_PATH, 'support']);
-    }
-
     public function getPath (Module $module)
     {
         // Todo: error
         $_name = explode("\\", get_class($module));
         $_name = strtolower($_name[count($_name) -1]);
         $_path = $this->dependency('app')->set()->get('sources.'.$_name, false);
-        return preg_replace("/^%/i", $this->getPrefixPath(), $_path);
+        return $this->dependency('app')->getPath($_path);
     }
 
     public function getAvailableFiles ($stringPath)

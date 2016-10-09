@@ -4,6 +4,7 @@ namespace Modules\Category;
 
 use lib\Module\Module;
 use Modules\Category\CategoryController;
+use Modules\Category\CategoryModel;
 
 class Category extends Module {
 
@@ -17,6 +18,7 @@ class Category extends Module {
         return array(
             'app',
             'api',
+            'model' => CategoryModel::class,
         );
     }
 
@@ -32,7 +34,9 @@ class Category extends Module {
     {
         return array(
             "controller" => "1|1",
-            "code" => "2|10",
+            "id_x" => "2|2",
+            "id_y" => "5|3",
+            "id_z" => "9|3",
             "name" => "13|30",
         );
     }

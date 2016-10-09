@@ -5,7 +5,9 @@ namespace lib\App;
 // Core
 use lib\Util\Settings;
 use lib\App\Injector;
+use Phine\Path\Path;
 // Module
+use lib\Module\Module;
 use lib\Module\ModuleHandler;
 // Dependencies
 use lib\App\Api;
@@ -72,6 +74,16 @@ class App {
     public function set ()
     {
         return $this->settings;
+    }
+
+    public function getPrefixPath ()
+    {
+        return Path::join([APP_PATH, 'support']);
+    }
+
+    public function getPath ($stringPath)
+    {
+        return preg_replace("/^%/i", $this->getPrefixPath(), $stringPath);
     }
 
 }
