@@ -54,13 +54,12 @@ class CategoryController extends Controller {
         if ($id)
         {
             $response = $api->request("PUT /categories/{$id}", $this->category($row));
-            echo("Category {$row['name']} updated with id {$response->id}. parent: ".$response->parent_id);
+            echo("\nCategory {$row['name']} updated with id {$response->id}. parent: ".$response->parent_id);
         } else {
             $response = $api->request("POST /categories", $this->category($row));
             $this->model()->setSQLite3Category($response->id, $this->model()->solveIds($row));
-            echo("Category {$row['name']} created with id {$response->id}. parent: ".$response->parent_id);
+            echo("\nCategory {$row['name']} created with id {$response->id}. parent: ".$response->parent_id);
         }
-        echo "\n";
     }
 
 }

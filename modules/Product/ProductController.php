@@ -27,7 +27,7 @@ class ProductController extends Controller {
         // Todo: debug
         $response = $this->dependency('api')->request("POST /products", $this->getProduct($row));
         # echo json_encode($row, JSON_PRETTY_PRINT) . PHP_EOL;
-        echo("Product {$row['sku']} created with id {$response->id}.\n");
+        echo("\nProduct {$row['sku']} created with id {$response->id}.");
         # $logger->debug("Product {$row['sku']} created with id {$response->id}.", []);
     }
 

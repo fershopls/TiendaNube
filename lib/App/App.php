@@ -46,6 +46,8 @@ class App {
     {
         if (class_exists($classModule))
         {
+            // Todo: debug
+            echo "\n[LOAD] ".$classModule;
             $this->modules[$classModule] = new $classModule;
         } else {
             // Todo: error
@@ -56,7 +58,6 @@ class App {
     {
         /* @var \lib\Module\Module $module */
         /* @var \lib\Module\Controller $_controller */
-        $moduleHandler = new ModuleHandler($this->injector);
         foreach ($this->modules as $module)
         {
             // Prepare & Fill Controller
@@ -67,7 +68,8 @@ class App {
             $_controller->injectDependencies ($_dependencies);
 
             // Handle Requests
-            $moduleHandler->handle($module, $_controller);
+            $handler = $this->instanceHandler($module);
+            $handler->handle($module, $_controller);
         }
     }
 
@@ -84,6 +86,12 @@ class App {
     public function getPath ($stringPath)
     {
         return preg_replace("/^%/i", $this->getPrefixPath(), $stringPath);
+    }
+
+    public function instanceHandler ($module)
+    {
+        $moduleHandler = $module->getHandlerClass();
+        return new $moduleHandler($this->injector);
     }
 
 }

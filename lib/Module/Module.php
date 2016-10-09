@@ -2,6 +2,8 @@
 
 namespace lib\Module;
 
+use lib\Module\ModuleHandler;
+
 abstract class Module {
 
     protected $dependencies = array();
@@ -13,5 +15,10 @@ abstract class Module {
     abstract public function getModuleAttributes();
 
     abstract public function getModuleDependencies();
+
+    public function getHandlerClass()
+    {
+        return ModuleHandler::class;
+    }
 
 }

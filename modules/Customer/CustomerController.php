@@ -8,7 +8,7 @@ class CustomerController extends Controller {
     
     public function doUploadCustomer ($row)
     {
-        echo "[C] {$row['name']} \n";
+        echo "\n[C] {$row['name']}";
     }
 
 }
