@@ -17,6 +17,7 @@ class PlainText {
     public function load ($data) {
         $this->raw_data = $data;
         $this->line_stack = $this->splitInLines($data);
+        $this->line_index = -1;
         return $this;
     }
 

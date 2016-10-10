@@ -22,6 +22,7 @@ class Stock extends Module {
     {
         return array(
             'app',
+            'api'
         );
     }
 

@@ -53,6 +53,7 @@ class StockHandler extends Handler {
                 {
                     $_action_file_path = Path::join([$module_action_time, $module_action_dir, $action_file]);
                     $_action_file_content = file_get_contents($_action_file_path);
+
                     $rows = $database->load($_action_file_content)->toArray($module_attributes);
                     foreach ($rows as $row)
                     {
