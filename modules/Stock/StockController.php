@@ -44,6 +44,7 @@ class StockController extends Controller {
         if (isset($res->id))
             return true;
         else
+            return false;
             // Todo: error
     }
 
