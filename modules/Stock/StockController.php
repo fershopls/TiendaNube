@@ -7,6 +7,7 @@ use Modules\Product\ProductModel;
 
 class StockController extends Controller {
 
+    const MAGENTO_STORE = 100;
     protected $model;
 
     public function model()
@@ -20,8 +21,7 @@ class StockController extends Controller {
 
     public function doSetQty ($row)
     {
-        // Todo: set right N# of store as const
-        if ($row['store'] == 100)
+        if ($this->validate($row))
             return false;
 
         $me = $this->getProduct($row['sku']);
@@ -50,12 +50,44 @@ class StockController extends Controller {
 
     public function doAddQty ($row)
     {
+        if ($this->validate($row))
+            return false;
         echo "\nAdd {$row['qty']} to {$row['sku']} store {$row['store']}";
+        return $this->addProductQty($row['sku'], $row['qty']);
     }
 
     public function doMinQty ($row)
     {
-        echo "\nMin {$row['qty']} to {$row['sku']} store {$row['store']}";
+        if ($this->validate($row))
+            return false;
+        echo "\nMin {$row['qty']} to {$row['sku']} store N#{$row['store']}";
+        return $this->addProductQty($row['sku'], $row['qty']*-1);
+    }
+    
+    public function addProductQty ($sku, $qty)
+    {
+        $me = $this->getProduct($sku);
+        if (!$me) return false;
+        $_qty = $me->extension_attributes->stock_item->qty + $qty;
+        $_qty = $_qty<0?0:$_qty;
+
+        $product = [
+            'product' => array(
+                'extension_attributes' => array(
+                    'stock_item' => [
+                        'qty' => $_qty,
+                        'isInStock' => $_qty?true:false,
+                    ]
+                )
+            ),
+        ];
+
+        return $this->dependency('api')->request('PUT /products/'.urlencode($sku), $product);
+    }
+
+    public function validate ($row)
+    {
+        return $row['store'] == self::MAGENTO_STORE && preg_match("/^\d+(\.\d+$)?/i", $row['qty']);
     }
 
     public function getProduct ($sku)
