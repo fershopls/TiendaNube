@@ -10,6 +10,7 @@ use Modules\Product\Product;
 use Modules\Customer\Customer;
 use Modules\Category\Category;
 use Modules\Stock\Stock;
+use Modules\Order\Order;
 
 $settings = include(Path::join([APP_PATH, 'support/config.php']));
 $app = new App($settings);
@@ -17,7 +18,8 @@ $app = new App($settings);
 # $app->register(Category::class);
 # $app->register(Product::class);
 # $app->register(Customer::class);
-$app->register(Stock::class);
+# $app->register(Stock::class);
+$app->register(Order::class);
 
 $app->run();
 
