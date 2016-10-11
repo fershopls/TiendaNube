@@ -2,13 +2,11 @@
 
 namespace lib\Handler;
 
-class WriterHandler extends Handler {
+class RunHandler extends Handler {
 
     public function getDependencies()
     {
-        return array (
-            'app',
-        );
+        return array();
     }
 
     public function handle (\lib\Module\Module $module, \lib\Module\Controller $controller)

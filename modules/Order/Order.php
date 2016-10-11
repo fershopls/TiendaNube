@@ -3,7 +3,7 @@
 namespace Modules\Order;
 
 use lib\Module\Module;
-use lib\Handler\WriterHandler;
+use lib\Handler\RunHandler;
 use Modules\Order\OrderController;
 use lib\Util\PlainTextWriter;
 
@@ -11,7 +11,7 @@ class Order extends Module {
 
     public function getHandlerClass()
     {
-        return WriterHandler::class;
+        return RunHandler::class;
     }
 
     public function getControllerClass()
