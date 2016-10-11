@@ -44,13 +44,21 @@ class Order extends Module {
                 'customer' => '22|10',
                 'aditional' => '33|10',
                 'store' => '44|5',
+                'ctrl' => '49|1'
             ],
             'row' => [
-                'qty' => '1|10',
+                'qty' => [
+                    'pos' => '1|10',
+                    'align' => STR_PAD_LEFT,
+                ],
                 'sku' => '12|16',
-                'price' => '29|14',
+                'price' => [
+                    'pos' => '29|14',
+                    'align' => STR_PAD_LEFT,
+                ],
                 'discount' => '44|6',
                 'tax' => '51|6',
+                'ctrl' => '57|1'
             ]
         );
     }

@@ -33,38 +33,51 @@ class PlainTextWriter
 
     public function solveFields ($fields, $rules)
     {
-        $string = "";
-        $_majorStart = 0;
+        $_majorBegin = 0;
         $_majorLength = 0;
 
-        foreach ($rules as $rule_str)
+        foreach ($rules as $id => $rule_str)
         {
-            if (!preg_match("/^\d+\|\d+$/i", $rule_str))
+            $rule = $this->getRule($rule_str);
+            if (!$rule['valid'])
                 continue;
-            list($_start, $_length) = explode("|", $rule_str, 2);
 
-            if ($_start > $_majorStart)
+            if ($rule['begin'] > $_majorBegin)
             {
-                $_majorStart = $_start;
-                $_majorLength = $_length;
+                $_majorBegin = $rule['begin'];
+                $_majorLength = $rule['length'];
             }
         }
-        for ($i = 0; $i < $_majorStart + $_majorLength +2; $i++)
-        {
-            $string .= ' ';
-        }
 
+        $string = str_pad("", $_majorBegin + $_majorLength);
 
         foreach ($rules as $field => $rule_str)
         {
-            if (!isset($fields[$field]) || !preg_match("/^\d+\|\d+$/i", $rule_str))
+            $rule = $this->getRule($rule_str);
+            if (!isset($fields[$field]) || !$rule['valid'])
                 continue;
-            list($_start, $_length) = explode("|", $rule_str, 2);
 
-            $_field = substr($fields[$field], 0, $_length);
-            $string = substr_replace($string, $_field, $_start -1, $_length);
+            $_field = substr($fields[$field], 0, $rule['length']);
+            $_field = $this->paddingText($_field, $rule);
+            $string = substr_replace($string, $_field, $rule['begin'] -1, $rule['length']);
         }
 
-        return trim($string);
+        return ($string);
+    }
+
+    public function getRule ($rule)
+    {
+        $rule = is_array($rule)?$rule:['pos' => $rule];
+        $rule['align'] = isset($rule['align'])?$rule['align']:STR_PAD_RIGHT;
+        $rule['valid'] = preg_match("/^\d+\|\d+$/i", $rule['pos']);
+        list($beg, $len) = explode("|", $rule['pos'], 2);
+        $rule['begin'] = $beg;
+        $rule['length'] = $len;
+        return $rule;
+    }
+
+    public function paddingText ($text, $rule)
+    {
+        return str_pad($text, $rule['length'], ' ', $rule['align']);
     }
 }
