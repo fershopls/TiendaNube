@@ -65,7 +65,17 @@ class StockHandler extends Handler {
             }
 
             // Todo: migrate
+            $this->makeMigration($module, $module_action_time);
         }
+    }
+
+    public function makeMigration($module, $from)
+    {
+        $dirMigration = Path::join([$this->getConfigSource('migration'), $this->getModuleName($module)]);
+        $this->assureDirectory($dirMigration);
+        $dirname = date('Ymdhis_') . uniqid();
+        $to = Path::join([$dirMigration, $dirname]);
+        $this->migrateFile($from, $to);
     }
 
 }

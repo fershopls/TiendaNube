@@ -18,8 +18,8 @@ $app = new App($settings);
 # $app->register(Category::class);
 # $app->register(Product::class);
 # $app->register(Customer::class);
-# $app->register(Stock::class);
-$app->register(Order::class);
+$app->register(Stock::class);
+# $app->register(Order::class);
 
 $app->run();
 

@@ -61,9 +61,18 @@ class ModuleHandler extends Handler {
 //                $logger->popProcessor();
             }
 
-            // Todo: migrate
-            # $this->migrateModuleFile($module_path, $filename);
+
+            $this->makeMigration($module, $_filename);
         }
+    }
+
+    public function makeMigration($module, $from)
+    {
+        $dirMigration = Path::join([$this->getConfigSource('migration'), $this->getModuleName($module)]);
+        $this->assureDirectory($dirMigration);
+        $filename = date('Ymdhis_') . uniqid() . '.txt';
+        $to = Path::join([$dirMigration, $filename]);
+        $this->migrateFile($from, $to);
     }
 
 }

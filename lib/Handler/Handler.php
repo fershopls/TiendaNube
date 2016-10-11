@@ -35,9 +35,19 @@ abstract class Handler {
     public function getPath (\lib\Module\Module $module)
     {
         // Todo: error
+        $_name = $this->getModuleName($module);
+        return $this->getConfigSource($_name);
+    }
+
+    public function getModuleName (\lib\Module\Module $module)
+    {
         $_name = explode("\\", get_class($module));
-        $_name = strtolower($_name[count($_name) -1]);
-        $_path = $this->dependency('app')->set()->get('sources.'.$_name, false);
+        return strtolower($_name[count($_name) -1]);
+    }
+
+    public function getConfigSource ($id)
+    {
+        $_path = $this->dependency('app')->set()->get('sources.'.$id, false);
         return $this->dependency('app')->getPath($_path);
     }
 
@@ -60,6 +70,27 @@ abstract class Handler {
         if (!$action)
             return False;
         return "do" . preg_replace("/\s/", "", ucwords(preg_replace("/[\-\_]/i", " ", $action)));
+    }
+
+    public function migrateFile($from, $to)
+    {
+        // TODO: Create migration log with files on every upload, delete, etc.
+        // Todo: Validar que el archivo se ha leido correctamente por el modulo
+        // TODO: Create a module who will take care about keep organized by month all the migration directory modules
+        rename($from, $to);
+        if (file_exists(realpath($to)))
+            return True;
+        return False;
+    }
+
+    public function assureDirectory ($stringPath)
+    {
+        if (!file_exists($stringPath)) {
+            mkdir($stringPath,null,true);
+            if (!file_exists($stringPath))
+                return False;
+        }
+        return True;
     }
 
 }
