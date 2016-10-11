@@ -33,8 +33,8 @@ class OrderController extends Controller {
                     'qty' => $this->getIntField($product->qty_ordered),
                     'sku' => $product->sku,
                     'price' => $this->getIntField($product->price),
-                    'discount' => '40%',
-                    'tax' => '16%',
+                    'discount' => '0',
+                    'tax' => '0',
                     'ctrl' => '@'
                 );
                 $data[] = $arrayProduct;
