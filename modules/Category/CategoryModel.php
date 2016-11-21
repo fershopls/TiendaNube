@@ -8,9 +8,9 @@ class CategoryModel {
 
     protected $connection;
 
-    public function solveIds ($row)
+    public function solveIds ($ids)
     {
-        return trim(join('', [$row['id_x'], $row['id_y'], $row['id_z']]));
+        return trim(join('', $ids));
     }
 
     public function open ($database)
