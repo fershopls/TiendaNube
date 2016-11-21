@@ -21,13 +21,24 @@ class ProductController extends Controller {
         }
         return $this->classModel;
     }
-    
-    public function doUploadProduct ($row)
+
+    public function doCreateProduct ($row)
     {
         // Todo: debug
         $response = $this->dependency('api')->request("POST /products", $this->getProduct($row));
         # echo json_encode($row, JSON_PRETTY_PRINT) . PHP_EOL;
         echo("\nProduct {$row['sku']} created with id {$response->id}.");
+        # $logger->debug("Product {$row['sku']} created with id {$response->id}.", []);
+    }
+
+    public function doUploadProduct ($row)
+    {
+        // Todo: debug
+        $product = $this->getProduct($row);
+        unset($product['product']['extension_attributes']['stock_item']); // Remove sku data
+        $response = $this->dependency('api')->request("POST /products", $product);
+        # echo json_encode($row, JSON_PRETTY_PRINT) . PHP_EOL;
+        echo("\nProduct {$row['sku']} updated with id {$response->id}.");
         # $logger->debug("Product {$row['sku']} created with id {$response->id}.", []);
     }
 
@@ -38,7 +49,7 @@ class ProductController extends Controller {
     protected function getProduct ($row)
     {
         $model = $this->model();
-        $id = $model->getSQLite3CategoryIdByRoute($model->solveIds($row));
+        $id = $model->getSQLite3CategoryIdByRoute($model->solveIds([$row['id_x'], $row['id_y'], $row['id_z']]));
         return [
             'product' => array(
                 'type_id' => 'virtual',

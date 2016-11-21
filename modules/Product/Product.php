@@ -25,7 +25,8 @@ class Product extends Module {
     public function getModuleRoutes ()
     {
         return array(
-            "upload_product" => "@",
+            "create_product" => "@",
+            "upload_product" => "%",
             "remove_product" => "-",
         );
     }
